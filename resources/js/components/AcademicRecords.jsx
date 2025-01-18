@@ -1,32 +1,34 @@
-import React, { useState } from "react";
+import React from "react";
 import { Formik, Form, Field, FieldArray } from "formik";
 import * as Yup from "yup";
 import { Button, Table, Form as BootstrapForm } from "react-bootstrap";
 import WizardButtons from "./WizardButtons";
+import { useWizardContext } from "./WizardContext";
 
+const validationSchema = Yup.object().shape({
+    records: Yup.array().of(
+        Yup.object().shape({
+            qualification: Yup.string().required("Qualification is required"),
+            yearPassed: Yup.number()
+                .required("Year Passed is required")
+                .min(1900, "Enter a valid year")
+                .max(new Date().getFullYear(), "Year cannot be in the future"),
+            institution: Yup.string().required(
+                "School/College/Board/University is required"
+            ),
+            mainSubjects: Yup.string().required("Main Subjects are required"),
+            percentage: Yup.string().required("Div or %age is required"),
+            achievements: Yup.string().optional(),
+        })
+    ),
+});
 const AcademicRecords = () => {
+    const { goNext, form } = useWizardContext();
     // Validation schema
-    const validationSchema = Yup.object().shape({
-        records: Yup.array().of(
-            Yup.object().shape({
-                qualification: Yup.string().required("Qualification is required"),
-                yearPassed: Yup.number()
-                    .required("Year Passed is required")
-                    .min(1900, "Enter a valid year")
-                    .max(new Date().getFullYear(), "Year cannot be in the future"),
-                institution: Yup.string().required(
-                    "School/College/Board/University is required"
-                ),
-                mainSubjects: Yup.string().required("Main Subjects are required"),
-                percentage: Yup.string().required("Div or %age is required"),
-                achievements: Yup.string().optional(),
-            })
-        ),
-    });
 
     // Initial form values
     const initialValues = {
-        records: [
+        records: form?.records || [
             {
                 qualification: "",
                 yearPassed: "",
@@ -60,6 +62,8 @@ const AcademicRecords = () => {
             validationSchema={validationSchema}
             onSubmit={(values) => {
                 console.log("Submitted Data", values);
+
+                goNext(values)
             }}
         >
             {({ values, errors, touched, handleChange }) => (

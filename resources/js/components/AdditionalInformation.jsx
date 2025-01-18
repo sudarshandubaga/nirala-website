@@ -1,11 +1,16 @@
 import React from "react";
-import { Form, Button, Row, Col, ToggleButton, ToggleButtonGroup, Table } from "react-bootstrap";
+import { Form, Row, Col, ToggleButton, ToggleButtonGroup, Table } from "react-bootstrap";
 import { Formik, FieldArray } from "formik";
 import * as Yup from "yup";
 import WizardButtons from "./WizardButtons";
+import { useWizardContext } from "./WizardContext";
 
 const AdditionalInformation = () => {
+
+    const { form } = useWizardContext();
+
     const initialValues = {
+        ...form,
         relatedToDirectors: "no",
         name: "",
         designation: "",

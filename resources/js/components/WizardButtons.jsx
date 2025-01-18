@@ -3,12 +3,7 @@ import { Button } from 'react-bootstrap'
 import { useWizardContext } from './WizardContext';
 
 const WizardButtons = () => {
-    const { steps, currentStep, setCurrentStep } = useWizardContext();
-
-
-    const goBack = () => {
-        if (currentStep > 0) setCurrentStep(currentStep - 1);
-    };
+    const { steps, currentStep, goBack } = useWizardContext();
 
     return (
         <div className='d-flex'>

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Container, Form as BootstrapForm, Button, Row, Col } from 'react-bootstrap';
+import { Form as BootstrapForm, Row, Col } from 'react-bootstrap';
 import WizardButtons from './WizardButtons';
 import ImagePicker from './ImagePicker';
+import { useWizardContext } from './WizardContext';
 
 const MaritalStatusOptions = ['Bachelor', 'Married', 'Other'];
 const VehicleTypeOptions = ['2 Wheeler', '4 Wheeler'];
@@ -21,9 +22,6 @@ const validationSchema = Yup.object({
     dateOfBirth: Yup.date()
         .required('Date of Birth is required')
         .max(new Date(), 'Date of Birth cannot be in the future'),
-    placeOfBirth: Yup.string()
-        .required('Place of Birth is required')
-        .min(3, 'Place of Birth must be at least 3 characters long'),
     maritalStatus: Yup.string()
         .required('Marital Status is required')
         .oneOf(MaritalStatusOptions, 'Invalid Marital Status'),
@@ -33,43 +31,66 @@ const validationSchema = Yup.object({
     phoneNumber: Yup.string()
         .required('Phone Number is required')
         .matches(/^\d{10}$/, 'Phone Number must be 10 digits'),
-    spouseName: Yup.string()
-        .when('maritalStatus', {
-            is: 'Married',
-            then: Yup.string().required('Spouse’s Name is required'),
-            otherwise: Yup.string(),
-        }),
+    spouseName: Yup.string().when('maritalStatus', (maritalStatus, schema) => {
+        return maritalStatus === 'Married'
+            ? schema.required("Spouse’s Name is required").min(3, "Name must be at least 3 characters long")
+            : schema.notRequired();
+    }),
     occupation: Yup.string()
         .required('Occupation is required'),
     nationality: Yup.string()
         .required('Nationality is required'),
-    vehicleType: Yup.string()
-        .required('Vehicle Type is required')
-        .oneOf(VehicleTypeOptions, 'Invalid Vehicle Type'),
+    // vehicleType: Yup.string()
+    //     .required('Vehicle Type is required')
+    //     .oneOf(VehicleTypeOptions, 'Invalid Vehicle Type'),
+    image: Yup.string()
+        .required('Photograph is required')
+        .test(
+            'is-base64',
+            'Photograph must be a valid base64 string',
+            (value) => {
+                if (!value) return false;
+                const base64Pattern = /^data:image\/(webp);base64,/;
+                return base64Pattern.test(value);
+            }
+        ),
+    sign: Yup.string()
+        .required('Signature is required')
+        .test(
+            'is-base64',
+            'Signature must be a valid base64 string',
+            (value) => {
+                if (!value) return false;
+                const base64Pattern = /^data:image\/(webp);base64,/;
+                return base64Pattern.test(value);
+            }
+        ),
 });
 
 const PersonalInformation = () => {
+    const { goNext, form } = useWizardContext();
+
     return (
         <Formik
             initialValues={{
-                fullName: '',
-                fatherOrHusbandName: '',
-                currentAddress: '',
-                dateOfBirth: '',
-                placeOfBirth: '',
-                maritalStatus: '',
-                email: '',
-                phoneNumber: '',
-                spouseName: '',
-                occupation: '',
-                nationality: 'Indian',
-                vehicleType: '',
-                image: null,
-                sign: null,
+                fullName: form?.fullName || '',
+                fatherOrHusbandName: form?.fatherOrHusbandName || '',
+                currentAddress: form?.currentAddress || '',
+                dateOfBirth: form?.dateOfBirth || '',
+                placeOfBirth: form?.placeOfBirth || '',
+                maritalStatus: form?.maritalStatus || '',
+                email: form?.email || '',
+                phoneNumber: form?.phoneNumber || '',
+                spouseName: form?.spouseName || '',
+                occupation: form?.occupation || '',
+                nationality: form?.nationality || 'Indian',
+                vehicleType: form?.vehicleType || '',
+                image: form?.image || null,
+                sign: form?.sign || null,
             }}
             validationSchema={validationSchema}
             onSubmit={(values) => {
-                alert(JSON.stringify(values, null, 2));
+                goNext(values)
             }}
         >
             {({ handleSubmit, values, setFieldValue }) => (
@@ -247,10 +268,12 @@ const PersonalInformation = () => {
                             <div className="mb-3">
                                 <BootstrapForm.Label>Upload Photograph</BootstrapForm.Label>
                                 <ImagePicker done={(image) => setFieldValue("image", image)} image={values.image} width={350} height={450} />
+                                <ErrorMessage name="image" component="div" className="text-danger" />
                             </div>
                             <div className="mb-3">
                                 <BootstrapForm.Label>Upload Signature</BootstrapForm.Label>
                                 <ImagePicker done={(sign) => setFieldValue("sign", sign)} image={values.sign} width={500} height={200} />
+                                <ErrorMessage name="sign" component="div" className="text-danger" />
                             </div>
                         </Col>
                     </Row>

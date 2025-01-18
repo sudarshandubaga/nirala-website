@@ -20,8 +20,19 @@ export const WizardProvider = ({ children }) => {
 
     const [currentStep, setCurrentStep] = useState(0);
 
+    const [form, setForm] = useState({})
+
+    const goNext = (values) => {
+        if (currentStep < steps.length - 1) setCurrentStep(currentStep + 1);
+        setForm(form => ({ ...form, ...values }))
+    }
+
+    const goBack = () => {
+        if (currentStep > 0) setCurrentStep(currentStep - 1);
+    };
+
     return (
-        <WizardContext.Provider value={{ steps, currentStep, setCurrentStep }}>
+        <WizardContext.Provider value={{ steps, currentStep, setCurrentStep, form, goBack, goNext }}>
             {children}
         </WizardContext.Provider>
     );

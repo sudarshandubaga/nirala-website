@@ -3,6 +3,7 @@ import { Table, Form, Button, Row, Col } from 'react-bootstrap';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import WizardButtons from './WizardButtons';
+import { useWizardContext } from './WizardContext';
 
 const validationSchema = Yup.object({
     particulars: Yup.array()
@@ -18,8 +19,10 @@ const validationSchema = Yup.object({
 });
 
 const SalaryDetails = () => {
+
+    const { goNext, form } = useWizardContext();
     const initialValues = {
-        particulars: [
+        particulars: form?.particulars || [
             {
                 title: "Remuneration",
                 items: [
@@ -66,7 +69,7 @@ const SalaryDetails = () => {
     };
 
     const handleSubmit = (values) => {
-        console.log('Form Values:', values);
+        goNext(values)
     };
 
     return (

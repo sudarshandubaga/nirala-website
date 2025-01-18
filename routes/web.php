@@ -33,6 +33,7 @@ use App\Http\Controllers\Web\MediaController as WebMediaController;
 use App\Http\Controllers\Web\PageController as WebPageController;
 use App\Http\Controllers\Web\PhaseController as WebPhaseController;
 use App\Http\Controllers\Web\ProjectController as WebProjectController;
+use App\Models\Site;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -52,14 +53,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/migrate', function () {
     return Artisan::call('migrate');
 });
-Route::get('/getSlug',function(Request $req){
-    $slug='';
-    if(!empty($req->title)){
+Route::get('/getSlug', function (Request $req) {
+    $slug = '';
+    if (!empty($req->title)) {
         $slug = Str::slug($req->title);
     }
     return response()->json([
-        'status'=>true,
-        'slug'=>$slug
+        'status' => true,
+        'slug' => $slug
     ]);
 })->name('getSlug');
 
@@ -68,29 +69,29 @@ Route::post('/login', [LoginController::class, 'doLogin'])->name('login.post');
 
 Route::group(['prefix' => 'nirala-admin', 'middleware' => 'auth', 'as' => 'admin.'], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('blog/create',[BlogController::class,'index'])->name('blog.create');
-    Route::post('blog/store',[BlogController::class,'store'])->name('blog.store');
-    Route::get('blog/read',[BlogController::class,'read'])->name('blog.read');
-    Route::get('blog/delete/{id}',[BlogController::class,'delete'])->name('blog.delete');
-    Route::get('blog/edit/{id}',[BlogController::class,'edit'])->name('blog.edit');
-    Route::post('blog/update/{id}',[BlogController::class,'update'])->name('blog.update');
-    Route::post('ckeditor/store',[BlogController::class,'ckeditorImageUpload'])->name('ckeditor.upload');
+    Route::get('blog/create', [BlogController::class, 'index'])->name('blog.create');
+    Route::post('blog/store', [BlogController::class, 'store'])->name('blog.store');
+    Route::get('blog/read', [BlogController::class, 'read'])->name('blog.read');
+    Route::get('blog/delete/{id}', [BlogController::class, 'delete'])->name('blog.delete');
+    Route::get('blog/edit/{id}', [BlogController::class, 'edit'])->name('blog.edit');
+    Route::post('blog/update/{id}', [BlogController::class, 'update'])->name('blog.update');
+    Route::post('ckeditor/store', [BlogController::class, 'ckeditorImageUpload'])->name('ckeditor.upload');
 
     // Testimonial 
-    Route::get('testimonial/create',[TestimonialController::class,'index'])->name('testimonial.create');
-    Route::post('testimonial/store',[TestimonialController::class,'store'])->name('testimonial.store');
-    Route::get('testimonial/read',[TestimonialController::class,'read'])->name('testimonial.read');
-    Route::get('testimonial/delete/{id}',[TestimonialController::class,'delete'])->name('testimonial.delete');
-    Route::get('testimonial/edit/{id}',[TestimonialController::class,'edit'])->name('testimonial.edit');
-    Route::post('testimonial/update/{id}',[TestimonialController::class,'update'])->name('testimonial.update');
-    
+    Route::get('testimonial/create', [TestimonialController::class, 'index'])->name('testimonial.create');
+    Route::post('testimonial/store', [TestimonialController::class, 'store'])->name('testimonial.store');
+    Route::get('testimonial/read', [TestimonialController::class, 'read'])->name('testimonial.read');
+    Route::get('testimonial/delete/{id}', [TestimonialController::class, 'delete'])->name('testimonial.delete');
+    Route::get('testimonial/edit/{id}', [TestimonialController::class, 'edit'])->name('testimonial.edit');
+    Route::post('testimonial/update/{id}', [TestimonialController::class, 'update'])->name('testimonial.update');
+
     // Testimonial Video
-    Route::get('testimonial-video/create',[TestimonialVideoController::class,'index'])->name('testimonial.video.create');
-    Route::post('testimonial-video/store',[TestimonialVideoController::class,'store'])->name('testimonial.video.store');
-    Route::get('testimonial-video/read',[TestimonialVideoController::class,'read'])->name('testimonial.video.read');
-    Route::get('testimonial-video/delete/{id}',[TestimonialVideoController::class,'delete'])->name('testimonial.video.delete');
-    Route::get('testimonial-video/edit/{id}',[TestimonialVideoController::class,'edit'])->name('testimonial.video.edit');
-    Route::post('testimonial-video/update/{id}',[TestimonialVideoController::class,'update'])->name('testimonial.video.update');
+    Route::get('testimonial-video/create', [TestimonialVideoController::class, 'index'])->name('testimonial.video.create');
+    Route::post('testimonial-video/store', [TestimonialVideoController::class, 'store'])->name('testimonial.video.store');
+    Route::get('testimonial-video/read', [TestimonialVideoController::class, 'read'])->name('testimonial.video.read');
+    Route::get('testimonial-video/delete/{id}', [TestimonialVideoController::class, 'delete'])->name('testimonial.video.delete');
+    Route::get('testimonial-video/edit/{id}', [TestimonialVideoController::class, 'edit'])->name('testimonial.video.edit');
+    Route::post('testimonial-video/update/{id}', [TestimonialVideoController::class, 'update'])->name('testimonial.video.update');
 
     Route::get('/logout', function () {
         Auth::logout();
@@ -143,4 +144,9 @@ Route::post('/contact-us', [ContactController::class, 'store'])->name('contact.s
 Route::get('/core-member', [WebPageController::class, 'member'])->name('page.member');
 Route::get('/career-post', [WebCareerPostController::class, 'index'])->name('career-post.index');
 Route::post('/career-post', [WebCareerPostController::class, 'store'])->name('career-post.store');
+Route::get('apply-job', function () {
+    $site = Site::find(1);
+    view()->share(compact('site'));
+    return view('web.inc.career-post.apply');
+})->name('apply-job');
 Route::get('{page}', [WebPageController::class, 'show'])->name('page.show');

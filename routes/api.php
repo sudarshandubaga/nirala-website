@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\FlatController;
 use App\Http\Controllers\PhaseController;
 use App\Http\Controllers\TowerController;
@@ -28,3 +29,5 @@ Route::group(['as' => 'api.'], function () {
 
     Route::post('phase', [PhaseController::class, 'removeImage'])->name('phase.remove');
 });
+
+Route::post('/applicant', [ApplicantController::class, 'store']);

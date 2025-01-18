@@ -3,7 +3,7 @@ import { useWizardContext, WizardProvider } from './components/WizardContext';
 import { Button } from 'react-bootstrap';
 
 const StepWizardContent = () => {
-    const { steps, currentStep, setCurrentStep } = useWizardContext();
+    const { steps, currentStep, setCurrentStep, form } = useWizardContext();
 
 
     const getVariant = (index) => {
@@ -29,6 +29,7 @@ const StepWizardContent = () => {
                 }
             </div>
             <h3 className="mb-4">{steps[currentStep].title}</h3>
+            {JSON.stringify(form)}
             {steps[currentStep].component}
         </div>
     );

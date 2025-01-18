@@ -30,7 +30,7 @@
                 <div class="container">
                     <div class="section-content">
 
-                        {{-- <div class="table-responsive">
+                        <div class="table-responsive">
                             <table class="table table-bordered table-sm">
                                 <thead class="bg-dark text-center">
                                     <tr>
@@ -59,7 +59,11 @@
                             </table>
                         </div>
 
-                        <hr> --}}
+                        <hr>
+
+                        <div class="text-center mb-5">
+                            <a href="{{ route('apply-job') }}" class="site-button">APPLY NOW</a>
+                        </div>
 
                         {{-- {{ Form::open(['url' => route('career-post.store'), 'files' => true]) }}
                         <h3>Join Us & Apply</h3>
@@ -139,14 +143,9 @@
                             </button>
                         </div>
                         {{ Form::close() }} --}}
-
-                        <div id="stepWizardApp"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    @viteReactRefresh
-    @vite('resources/js/app.jsx')
 @endsection
