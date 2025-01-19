@@ -82,7 +82,7 @@ class ApplicantController extends Controller
         Mail::send('emails.application_form', ['form' => $applicant->toArray()], function ($message) use ($applicant, $pdfPath) {
             $resumePath = storage_path('app/public/' . $applicant->resume_file);
 
-            $message->to("sudarshandubaga@gmail.com")
+            $message->to("harsh.khatri1994@gmail.com")
                 ->subject('Application Submission')
                 ->attach($pdfPath, [
                     'as' => 'ApplicationForm.pdf',
