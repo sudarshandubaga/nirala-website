@@ -27,36 +27,71 @@ class ApplicantController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'email' => 'required|email|unique:applicants,email',
             'resume_file' => 'required|file|mimes:pdf,doc,docx|max:2048',
         ]);
 
         // Save the data
-        $data = $request->except('resume_file');
+        $data = $request->except([
+            // Storage Files
+            'resume_file',
+            'image',
+            'sign',
+            // Array Fields
+            'records',
+            'employment_history',
+            'references',
+            'professional_memberships',
+            'particulars',
+        ]);
         if ($request->hasFile('resume_file')) {
-            $data['resume_file'] = $request->file('resume_file')->store('resumes');
+            $data['resume_file'] = $request->file('resume_file')->store('resumes', 'public');
         }
+        if (!empty($request->image)) {
+            $data['image'] = dataUriToImage($request->image, "applicants");
+        }
+        if (!empty($request->sign)) {
+            $data['sign'] = dataUriToImage($request->sign, "applicants");
+        }
+
+        $arrayFields = [
+            'records',
+            'employment_history',
+            'references',
+            'professional_membership',
+            'particulars',
+        ];
+        foreach ($arrayFields as $arrField) {
+            if (!empty($request->get($arrField)))
+                $data[$arrField] = json_decode($request->get($arrField));
+        }
+
         $applicant = Applicant::create($data);
 
         // Generate PDF
-        $pdf = Pdf::loadView('pdf.applicant-details', compact('applicant'));
-        $pdfPath = storage_path('app/public/application_form.pdf');
+        $pdf = Pdf::loadView('emails.application_form', ['form' => $applicant->toArray()]);
+        $application_form = 'applicants/application_form_' . time() . '.pdf';
+        $pdfPath = storage_path('app/public/' . $application_form);
         $pdf->save($pdfPath);
 
+        $applicant->application_form = $application_form;
+        $applicant->save();
+
         // Send Email
-        Mail::send([], [], function ($message) use ($applicant, $pdfPath) {
-            $message->to($applicant->email)
+        Mail::send('emails.application_form', ['form' => $applicant->toArray()], function ($message) use ($applicant, $pdfPath) {
+            $resumePath = storage_path('app/public/' . $applicant->resume_file);
+
+            $message->to("sudarshandubaga@gmail.com")
                 ->subject('Application Submission')
                 ->attach($pdfPath, [
                     'as' => 'ApplicationForm.pdf',
                     'mime' => 'application/pdf',
                 ])
-                ->attach(storage_path('app/' . $applicant->resume_file), [
+                ->attach($resumePath, [
                     'as' => 'Resume.' . pathinfo($applicant->resume_file, PATHINFO_EXTENSION),
-                    'mime' => mime_content_type(storage_path('app/' . $applicant->resume_file)),
-                ])
-                ->setBody('Your application has been submitted successfully.');
+                    'mime' => mime_content_type($resumePath),
+                ]);
         });
 
         return response()->json(['message' => 'Application submitted successfully.'], 201);
@@ -70,7 +105,8 @@ class ApplicantController extends Controller
      */
     public function show(Applicant $applicant)
     {
-        //
+        // dd($applicant->toArray());
+        return view('emails.application_form', ['form' => $applicant->toArray()]);
     }
 
     /**

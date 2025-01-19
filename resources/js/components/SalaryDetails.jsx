@@ -9,10 +9,15 @@ const validationSchema = Yup.object({
     particulars: Yup.array()
         .of(
             Yup.object({
-                amount: Yup.number()
-                    .typeError('Must be a number')
+                items: Yup.array()
+                    .of(
+                        Yup.object({
+                            amount: Yup.number()
+                                .typeError('Must be a number')
+                                .required('Required'),
+                        })
+                    )
                     .required('Required'),
-                remarks: Yup.string().required('Required'),
             })
         )
         .required('Required'),
@@ -69,6 +74,8 @@ const SalaryDetails = () => {
     };
 
     const handleSubmit = (values) => {
+        console.log('salary details: ', values);
+
         goNext(values)
     };
 
@@ -80,6 +87,7 @@ const SalaryDetails = () => {
         >
             {({ values, handleSubmit }) => (
                 <Form noValidate onSubmit={handleSubmit}>
+                    {/* <ErrorMessage name='particulars' component="div" className='text-danger' /> */}
                     <Table bordered>
                         <thead>
                             <tr>
@@ -102,22 +110,22 @@ const SalaryDetails = () => {
                                                 <td>{item.name}</td>
                                                 <td>
                                                     <Field
-                                                        name={`particulars[${index}].amount`}
+                                                        name={`particulars[${partIndex}].items[${index}].amount`}
                                                         className="form-control"
                                                     />
                                                     <ErrorMessage
-                                                        name={`particulars[${index}].amount`}
+                                                        name={`particulars[${partIndex}].items[${index}].amount`}
                                                         component="div"
                                                         className="text-danger"
                                                     />
                                                 </td>
                                                 <td>
                                                     <Field
-                                                        name={`particulars[${index}].remarks`}
+                                                        name={`particulars[${partIndex}].items[${index}].remarks`}
                                                         className="form-control"
                                                     />
                                                     <ErrorMessage
-                                                        name={`particulars[${index}].remarks`}
+                                                        name={`particulars[${partIndex}].items[${index}].remarks`}
                                                         component="div"
                                                         className="text-danger"
                                                     />
@@ -134,7 +142,13 @@ const SalaryDetails = () => {
                                 <td>
                                     <span className="fw-bold">
                                         {values.particulars.reduce(
-                                            (sum, item) => sum + (parseFloat(item.amount) || 0),
+                                            (sum, part) =>
+                                                sum +
+                                                part.items.reduce(
+                                                    (itemSum, item) =>
+                                                        itemSum + (parseFloat(item.amount) || 0),
+                                                    0
+                                                ),
                                             0
                                         )}
                                     </span>

@@ -24,7 +24,11 @@ class SideMenubar extends Component
      */
     public function render()
     {
-        $adminMenus = AdminMenu::with('children')->whereNull('admin_menu_id')->whereRaw('FIND_IN_SET("' . auth()->user()->role . '", role)')->oldest()->get();
+        $adminMenus = AdminMenu::with('children')
+            ->whereNull('admin_menu_id')
+            ->whereRaw('FIND_IN_SET("' . auth()->user()->role . '", role)')
+            ->oldest()
+            ->get();
 
         return view('components.side-menubar', compact('adminMenus'));
     }

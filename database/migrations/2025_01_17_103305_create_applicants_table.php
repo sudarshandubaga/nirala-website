@@ -42,6 +42,7 @@ return new class extends Migration
             $table->json('employment_history')->nullable();
             $table->json('particulars')->nullable();
             $table->string('resume_file')->nullable();
+            $table->string('application_form')->nullable();
             $table->timestamps();
         });
     }

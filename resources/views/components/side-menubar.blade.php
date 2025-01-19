@@ -1,5 +1,5 @@
 <!-- Menu -->
-<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme vh-100 d-flex flex-column">
     <div class="app-brand demo">
         <a href="{{ route('admin.dashboard') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
@@ -56,11 +56,11 @@
 
     <div class="menu-inner-shadow"></div>
 
-    <ul class="menu-inner py-1">
+    <ul class="menu-inner py-1 flex-grow overflow-auto">
         <!-- Dashboard -->
 
         @foreach ($adminMenus as $key => $m)
-            <li class="menu-item{{ in_array(request()->route()->getName(),$m->routes)? ' active open': '' }}">
+            <li class="menu-item{{ in_array(request()->route()->getName(), $m->routes) ? ' active open' : '' }}">
                 <a href="{{ !$m->route_name ? 'javascript:void(0);' : route($m->route_name) }}"
                     class="menu-link{{ $m->children()->count() ? ' menu-toggle' : '' }}">
                     <i class="menu-icon tf-icons {{ $m->icon }}"></i>
@@ -71,7 +71,7 @@
                     <ul class="menu-sub">
                         @foreach ($m->children as $m2)
                             <li
-                                class="menu-item{{ request()->route()->getName() === $m2->route_name? ' active': '' }}">
+                                class="menu-item{{ request()->route()->getName() === $m2->route_name ? ' active' : '' }}">
                                 <a href="{{ !$m2->route_name ? 'javascript:void(0);' : route($m2->route_name) }}"
                                     class="menu-link">
                                     {{ $m2->label }}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ApplicantDataTable;
 use App\DataTables\CareerEnquiryDataTable;
 use App\Models\CareerEnquiry;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class CareerEnquiryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(CareerEnquiryDataTable $dataTable)
+    public function index(ApplicantDataTable $dataTable)
     {
         return $dataTable->render('modules.career-enquiry.index');
     }

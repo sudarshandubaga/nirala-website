@@ -9,18 +9,22 @@
         body {
             font-family: Arial, sans-serif;
             line-height: 1.5;
+            max-width: 1000px;
+            margin: 0 auto;
+            font-size: 14px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
+            font-size: 12px !important;
         }
 
         th,
         td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 3px;
         }
 
         th {
@@ -39,17 +43,73 @@
 <body>
     <h2>Employment Application Form</h2>
 
-    <p><strong>Position Applied For:</strong> {{ $form['positionApplied'] ?? '' }}</p>
-    <p><strong>Name:</strong> {{ $form['fullName'] ?? '' }}</p>
-    <p><strong>Father/Husband's Name:</strong> {{ $form['fatherOrHusbandName'] ?? '' }}</p>
-    <p><strong>Address:</strong> {{ $form['currentAddress'] ?? '' }}</p>
-    <p><strong>Phone:</strong> {{ $form['phoneNumber'] ?? '' }}</p>
-    <p><strong>Email:</strong> {{ $form['email'] ?? '' }}</p>
-    <p><strong>Date of Birth:</strong> {{ $form['dateOfBirth'] ?? '' }}</p>
-    <p><strong>Place of Birth:</strong> {{ $form['placeOfBirth'] ?? '' }}</p>
-    <p><strong>Marital Status:</strong> {{ $form['maritalStatus'] ?? '' }}</p>
-    <p><strong>Spouse's Name:</strong> {{ $form['spouseName'] ?? '' }}</p>
-    <p><strong>Nationality:</strong> {{ $form['nationality'] ?? 'Indian' }}</p>
+    <table>
+        <tr>
+            <th>Position Applied For:</th>
+            <td>{{ $form['position_applied'] ?? '' }}</td>
+            <td rowspan="11" style="width: 250px; text-align: center;">
+                <div style="margin-bottom: 5px;">
+                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $form['image']))) }}"
+                        alt="" style="max-width: 200px; border: 1px solid #ccc; padding: 5px;">
+                </div>
+                <div style="margin-bottom: 5px;">
+                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $form['sign']))) }}"
+                        alt="" style="max-width: 200px; border: 1px solid #ccc; padding: 5px;">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>Name:</th>
+            <td>
+                {{ $form['full_name'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <th>Father/Husband's Name:</th>
+            <td>
+                {{ $form['father_or_husband_name'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <th>Address:</th>
+            <td>
+                {{ $form['current_address'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <th>Phone:</th>
+            <td>
+                {{ $form['phone_number'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <th>Email:</th>
+            <td>
+                {{ $form['email'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <th>Date of Birth:</th>
+            <td>
+                {{ $form['date_of_birth'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <th>Place of Birth:</th>
+            <td>
+                {{ $form['place_of_birth'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <th>Marital Status:</th>
+            <td>
+                {{ $form['marital_status'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <th>Spouse's Name:</th>
+            <td>
+                {{ $form['spouse_name'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <th>Nationality:</th>
+            <td>
+                {{ $form['nationality'] ?? 'Indian' }}</td>
+        </tr>
+    </table>
+
 
     <h3 class="section-title">Academic Record</h3>
     <table>
@@ -67,9 +127,9 @@
             @foreach ($form['records'] ?? [] as $record)
                 <tr>
                     <td>{{ $record['qualification'] }}</td>
-                    <td>{{ $record['yearPassed'] }}</td>
+                    <td>{{ $record['year_passed'] }}</td>
                     <td>{{ $record['institution'] }}</td>
-                    <td>{{ $record['mainSubjects'] }}</td>
+                    <td>{{ $record['main_subjects'] }}</td>
                     <td>{{ $record['percentage'] }}</td>
                     <td>{{ $record['achievements'] }}</td>
                 </tr>
@@ -87,10 +147,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($form['professionalMembership'] ?? [] as $membership)
+            @foreach ($form['professional_membership'] ?? [] as $membership)
                 <tr>
                     <td>{{ $membership['organization'] }}</td>
-                    <td>{{ $membership['dateSince'] }}</td>
+                    <td>{{ $membership['date_since'] }}</td>
                     <td>{{ $membership['contribution'] }}</td>
                 </tr>
             @endforeach
@@ -101,21 +161,33 @@
     <table>
         <thead>
             <tr>
-                <th>Month & Year</th>
-                <th>Position</th>
-                <th>Organization</th>
-                <th>Responsibilities</th>
-                <th>Reason for Leaving</th>
+                <th rowspan="2">From</th>
+                <th rowspan="2">To</th>
+                <th rowspan="2">Employer</th>
+                <th colspan="2">Designation</th>
+                <th rowspan="2">Job Description</th>
+                <th colspan="2">Salary</th>
+                <th rowspan="2">Reason Of Leaving</th>
+            </tr>
+            <tr>
+                <th>On Joining</th>
+                <th>On Leaving</th>
+                <th>On Joining</th>
+                <th>On Leaving</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($form['employmentHistory'] ?? [] as $history)
+            @foreach ($form['employment_history'] ?? [] as $history)
                 <tr>
-                    <td>{{ $history['monthAndYear'] }}</td>
-                    <td>{{ $history['position'] }}</td>
-                    <td>{{ $history['organization'] }}</td>
-                    <td>{{ $history['responsibilities'] }}</td>
-                    <td>{{ $history['reasonForLeaving'] }}</td>
+                    <td>{{ $history['from'] }}</td>
+                    <td>{{ $history['to'] }}</td>
+                    <td>{{ $history['employer'] }}</td>
+                    <td>{{ $history['designation_on_joining'] }}</td>
+                    <td>{{ $history['designation_on_leaving'] }}</td>
+                    <td>{{ $history['job_description'] }}</td>
+                    <td>{{ $history['salary_on_joining'] }}</td>
+                    <td>{{ $history['salary_on_leaving'] }}</td>
+                    <td>{{ $history['reason_of_leaving'] }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -136,7 +208,7 @@
         <tbody>
             @foreach ($form['references'] ?? [] as $reference)
                 <tr>
-                    <td>{{ $reference['serialNo'] }}</td>
+                    <td>{{ $reference['serial_no'] }}</td>
                     <td>{{ $reference['name'] }}</td>
                     <td>{{ $reference['company'] }}</td>
                     <td>{{ $reference['designation'] }}</td>
@@ -175,19 +247,16 @@
         </tbody>
     </table>
 
-    <p><strong>Expected CTC:</strong> {{ $form['expectedCTC'] ?? '' }}</p>
-    <p><strong>Notice Period:</strong> {{ $form['noticePeriod'] ?? '' }}</p>
-    <p><strong>Convicted:</strong> {{ $form['convicted'] ?? 'No' }}</p>
-    <p><strong>Interviewed:</strong> {{ $form['interviewed'] ?? 'No' }}</p>
+    <p style="display: flex; justify-content: space-between"><strong>Expected CTC:</strong>
+        {{ $form['expected_ctc'] ?? '' }}</p>
+    <p style="display: flex; justify-content: space-between"><strong>Notice Period:</strong>
+        {{ $form['notice_period'] ?? '' }}</p>
+    <p style="display: flex; justify-content: space-between"><strong>Convicted:</strong>
+        {{ $form['convicted'] ?? 'No' }}</p>
+    <p style="display: flex; justify-content: space-between"><strong>Interviewed:</strong>
+        {{ $form['interviewed'] ?? 'No' }}</p>
 
-    <p>
-        I affirm that I have not provided any wrong information that may affect my candidacy.
-        <br>
-        <strong>Place:</strong> {{ $form['place'] ?? '' }}<br>
-        <strong>Date:</strong> {{ $form['date'] ?? '' }}
-    </p>
-
-    <p>Regards,<br>{{ $form['fullName'] ?? '' }}</p>
+    <p>Regards,<br>{{ $form['full_name'] ?? '' }}</p>
 </body>
 
 </html>

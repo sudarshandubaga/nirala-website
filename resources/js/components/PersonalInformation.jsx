@@ -5,6 +5,7 @@ import { Form as BootstrapForm, Row, Col } from 'react-bootstrap';
 import WizardButtons from './WizardButtons';
 import ImagePicker from './ImagePicker';
 import { useWizardContext } from './WizardContext';
+import moment from 'moment';
 
 const MaritalStatusOptions = ['Bachelor', 'Married', 'Other'];
 const VehicleTypeOptions = ['2 Wheeler', '4 Wheeler'];
@@ -144,7 +145,7 @@ const PersonalInformation = () => {
                                 <Col md={4} className="mb-3">
                                     <BootstrapForm.Group>
                                         <BootstrapForm.Label>Date of Birth</BootstrapForm.Label>
-                                        <Field name="dateOfBirth" as={BootstrapForm.Control} type="date" />
+                                        <Field name="dateOfBirth" as={BootstrapForm.Control} type="date" max={moment(new Date()).subtract("18", "years").format("YYYY-MM-DD")} />
                                         <ErrorMessage name="dateOfBirth" component="div" className="text-danger" />
                                     </BootstrapForm.Group>
                                 </Col>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CareerEnquiryController;
 use App\Http\Controllers\CareerPostController;
@@ -106,6 +107,9 @@ Route::group(['prefix' => 'nirala-admin', 'middleware' => 'auth', 'as' => 'admin
 
     Route::get('/change-password', [AdminController::class, 'index'])->name('password.index');
     Route::post('/change-password', [AdminController::class, 'store'])->name('password.store');
+
+    Route::get('/applicant/{applicant}', [ApplicantController::class, 'show'])->name('applicant.show');
+
 
     Route::resources([
         'category' => CategoryController::class,

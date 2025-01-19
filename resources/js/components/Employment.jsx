@@ -9,7 +9,7 @@ import { useWizardContext } from './WizardContext';
 
 const Employment = () => {
     const [showModal, setShowModal] = useState(false);
-    const [currentIndex, setCurrentIndex] = useState(null);
+    const [editData, setEditData] = useState(null);
     const { goNext, form } = useWizardContext();
 
     const formikRef = useRef(null)
@@ -37,14 +37,14 @@ const Employment = () => {
         ).min(1, 'At least one employment history record is required'),
     });
 
-    const handleShowModal = (index = null) => {
-        setCurrentIndex(index);
+    const handleShowModal = (editValues = null) => {
+        setEditData(editValues);
         setShowModal(true);
     };
 
     const handleCloseModal = () => {
         setShowModal(false);
-        setCurrentIndex(null);
+        setEditData(null);
     };
 
     return (
@@ -80,7 +80,7 @@ const Employment = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {values.professionalMembership.map((_, index) => (
+                                            {values?.professionalMembership?.map((_, index) => (
                                                 <tr key={index} className="mb-3">
                                                     <td md={4}>
                                                         <Field
@@ -142,7 +142,7 @@ const Employment = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {values.employmentHistory.map((record, index) => (
+                                {values?.employmentHistory?.map((record, index) => (
                                     <tr key={index}>
                                         <td>{record.from || '-'}</td>
                                         <td>{record.to || '-'}</td>
@@ -151,7 +151,7 @@ const Employment = () => {
                                             {record.designationOnJoining} / {record.designationOnLeaving}
                                         </td>
                                         <td>
-                                            <Button variant="primary" size="sm" onClick={() => handleShowModal(index)}>
+                                            <Button variant="primary" size="sm" onClick={() => handleShowModal(record)}>
                                                 Edit
                                             </Button>{' '}
                                             <Button
@@ -178,7 +178,7 @@ const Employment = () => {
             <Modal show={showModal} onHide={handleCloseModal} scrollable centered>
                 <Modal.Header>
                     <Modal.Title>
-                        {currentIndex !== null ? 'Edit Employment History' : 'Add Employment History'}
+                        {editData !== null ? 'Edit Employment History' : 'Add Employment History'}
                     </Modal.Title>
                     <button type='button' onClick={handleCloseModal} style={{
                         backgroundColor: 'transparent',
@@ -190,8 +190,8 @@ const Employment = () => {
                     </button>
                 </Modal.Header>
                 <Modal.Body>
-                    <Formik initialValues={currentIndex !== null
-                        ? values.employmentHistory[currentIndex]
+                    <Formik initialValues={editData !== null
+                        ? editData
                         : {
                             from: '',
                             to: '',

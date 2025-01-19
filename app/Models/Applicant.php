@@ -12,10 +12,10 @@ class Applicant extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'academic_records' => 'array',
+        'records' => 'array',
         'employment_history' => 'array',
         'references' => 'array',
-        'professional_memberships' => 'array',
+        'professional_membership' => 'array',
         'particulars' => 'array',
     ];
 }
