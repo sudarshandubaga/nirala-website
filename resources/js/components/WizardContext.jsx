@@ -183,7 +183,50 @@ export const WizardProvider = ({ children }) => {
         references: [],
         professionalMembership: [],
         employmentHistory: [],
-        particulars: [],
+        particulars: [
+            {
+                title: "Remuneration",
+                items: [
+                    { name: 'Basic Salary', amount: '', remarks: '' },
+                    { name: 'DA', amount: '', remarks: '' },
+                    { name: 'Other Allowance', amount: '', remarks: '' },
+                ]
+            },
+            {
+                title: "Residence",
+                items: [
+                    { name: 'Free accommodation', amount: '', remarks: '' },
+                    { name: 'Free furnished/semi furnished', amount: '', remarks: '' },
+                    { name: 'HRA', amount: '', remarks: '' },
+                    { name: 'Telephone Subsidy', amount: '', remarks: '' },
+                ]
+            },
+            {
+                title: "Conveyance",
+                items: [
+
+                    { name: 'Company Car', amount: '', remarks: '' },
+                    { name: 'Conveyance Allowance', amount: '', remarks: '' },
+                    { name: 'Conveyance Reimbursement', amount: '', remarks: '' },
+                ]
+            },
+            {
+                title: "Others",
+                items: [
+                    { name: 'Medical Subsidy/Allowance', amount: '', remarks: '' },
+                    { name: 'Leave Travel Allowance', amount: '', remarks: '' },
+                    { name: 'Bonus/Ex Gratia', amount: '', remarks: '' },
+                ]
+            },
+            {
+                title: "Retirement benefits",
+                items: [
+                    { name: 'Contributory P.F.', amount: '', remarks: '' },
+                    { name: 'Gratuity', amount: '', remarks: '' },
+                    { name: 'Superannuation', amount: '', remarks: '' },
+                ]
+            }
+        ],
         resumeFile: null,
     });
 
