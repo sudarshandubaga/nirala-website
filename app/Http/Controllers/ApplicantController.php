@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Applicant;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class ApplicantController extends Controller
@@ -106,7 +107,10 @@ class ApplicantController extends Controller
     public function show(Applicant $applicant)
     {
         // return view('emails.application_form', ['form' => $applicant->load('career_post')->toArray()]);
-        return Pdf::loadView('emails.application_form', ['form' => $applicant->load('career_post')->toArray()])->stream('application_form.pdf');
+        $pdfResponse = Pdf::loadView('emails.application_form', ['form' => $applicant->load('career_post')->toArray()]);
+        // Log::info($dompdf->getWarnings());
+
+        return $pdfResponse->stream('application_form.pdf');
     }
 
     /**
