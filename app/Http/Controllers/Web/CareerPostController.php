@@ -14,10 +14,14 @@ class CareerPostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $careerPosts = CareerPost::latest()->get();
         $posts = CareerPost::latest()->pluck('title', 'id');
+
+        if ($request?->response == "json")
+            return response()->json($posts);
+
         return view('web.inc.career-post.index', compact('careerPosts', 'posts'));
     }
 

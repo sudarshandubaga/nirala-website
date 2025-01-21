@@ -158,6 +158,7 @@ export const WizardProvider = ({ children }) => {
     // });
 
     const [form, setForm] = useState({
+        carrerPostId: '',
         fullName: '',
         fatherOrHusbandName: '',
         currentAddress: '',
@@ -179,6 +180,7 @@ export const WizardProvider = ({ children }) => {
         convicted: '',
         interviewed: '',
         expectedCtc: null,
+        currentCtc: null,
         noticePeriod: '',
         references: [],
         professionalMembership: [],

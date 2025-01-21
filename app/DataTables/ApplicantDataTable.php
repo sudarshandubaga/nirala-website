@@ -32,8 +32,8 @@ class ApplicantDataTable extends DataTable
                 return '
                         <div class="mb-1">
                             <a href="' .
-                    asset('storage/' . $careerPost->application_form)
-                    // route('admin.applicant.show', $careerPost)
+                    // asset('storage/' . $careerPost->application_form)
+                    route('admin.applicant.show', $careerPost)
                     . '" class="btn btn-sm btn-primary" target="_blank">
                                 <i class="bx bx-download"></i> Form
                             </a>
@@ -67,6 +67,9 @@ class ApplicantDataTable extends DataTable
                             <i class="bx bx-map"></i> ' . $careerPost->current_address . '
                     </div>';
                 return 'No File';
+            })
+            ->addColumn('post', function ($careerPost) {
+                return $careerPost?->career_post?->title ?? 'N/A';
             })
             ->rawColumns(['action', 'file',  'photo', 'contact'])
             ->addIndexColumn();
@@ -119,15 +122,16 @@ class ApplicantDataTable extends DataTable
                 ->searchable(false)
                 ->orderable(false),
             Column::make('full_name')->title('Name'),
+            Column::make('post'),
             Column::make('photo')
                 ->searchable(false)
                 ->orderable(false),
-            Column::make('father_or_husband_name')->title('Father/Husband'),
+            // Column::make('father_or_husband_name')->title('Father/Husband'),
             Column::make('contact'),
             // Column::make('phone_number'),
             // Column::make('current_address'),
             // Column::make('experience'),
-            // Column::make('current_salary'),
+            Column::make('current_ctc'),
             Column::make('expected_ctc'),
             // Column::make('previous_company_name'),
             // Column::make('remarks'),

@@ -18,4 +18,9 @@ class Applicant extends Model
         'professional_membership' => 'array',
         'particulars' => 'array',
     ];
+
+    public function career_post()
+    {
+        return $this->belongsTo(CareerPost::class, 'career_post_id');
+    }
 }

@@ -46,14 +46,14 @@
     <table>
         <tr>
             <th>Position Applied For:</th>
-            <td>{{ $form['position_applied'] ?? '' }}</td>
+            <td>{{ $form['career_post']['title'] ?? '' }}</td>
             <td rowspan="11" style="width: 250px; text-align: center;">
                 <div style="margin-bottom: 5px;">
-                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $form['image']))) }}"
+                    <img src="data:image/webp;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $form['image']))) }}"
                         alt="" style="max-width: 200px; border: 1px solid #ccc; padding: 5px;">
                 </div>
                 <div style="margin-bottom: 5px;">
-                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $form['sign']))) }}"
+                    <img src="data:image/webp;base64,{{ base64_encode(file_get_contents(public_path('storage/' . $form['sign']))) }}"
                         alt="" style="max-width: 200px; border: 1px solid #ccc; padding: 5px;">
                 </div>
             </td>

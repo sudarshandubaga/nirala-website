@@ -70,7 +70,7 @@ class ApplicantController extends Controller
         $applicant = Applicant::create($data);
 
         // Generate PDF
-        $pdf = Pdf::loadView('emails.application_form', ['form' => $applicant->toArray()]);
+        $pdf = Pdf::loadView('emails.application_form', ['form' => $applicant->load('career_post')->toArray()]);
         $application_form = 'applicants/application_form_' . time() . '.pdf';
         $pdfPath = storage_path('app/public/' . $application_form);
         $pdf->save($pdfPath);
@@ -79,7 +79,7 @@ class ApplicantController extends Controller
         $applicant->save();
 
         // Send Email
-        Mail::send('emails.application_form', ['form' => $applicant->toArray()], function ($message) use ($applicant, $pdfPath) {
+        Mail::send('emails.application_form', ['form' => $applicant->load('career_post')->toArray()], function ($message) use ($applicant, $pdfPath) {
             $resumePath = storage_path('app/public/' . $applicant->resume_file);
 
             $message->to("careers@niralaworld.com")
@@ -105,8 +105,8 @@ class ApplicantController extends Controller
      */
     public function show(Applicant $applicant)
     {
-        // dd($applicant->toArray());
-        return view('emails.application_form', ['form' => $applicant->toArray()]);
+        // return view('emails.application_form', ['form' => $applicant->load('career_post')->toArray()]);
+        return Pdf::loadView('emails.application_form', ['form' => $applicant->load('career_post')->toArray()])->stream('application_form.pdf');
     }
 
     /**

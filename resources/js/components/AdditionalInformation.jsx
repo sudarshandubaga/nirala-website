@@ -207,34 +207,51 @@ const AdditionalInformation = () => {
                         )}
                     </div>
 
-                    {/* Normal Values */}
-                    <div className="mb-3">
-                        <Form.Label>Expected CTC per annum</Form.Label>
-                        <Form.Control
-                            type="number"
-                            name="expectedCtc"
-                            value={values.expectedCtc}
-                            onChange={handleChange}
-                            isInvalid={touched.expectedCtc && errors.expectedCtc}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {errors.expectedCtc}
-                        </Form.Control.Feedback>
-                    </div>
+                    <Row>
+                        {/* Normal Values */}
+                        <Col lg={4} className="mb-3">
+                            <Form.Label>Current CTC per annum</Form.Label>
+                            <Form.Control
+                                type="number"
+                                name="currentCtc"
+                                value={values.currentCtc}
+                                onChange={handleChange}
+                                isInvalid={touched.currentCtc && errors.currentCtc}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.expectedCtc}
+                            </Form.Control.Feedback>
+                        </Col>
+                        {/* Normal Values */}
+                        <Col lg={4} className="mb-3">
+                            <Form.Label>Expected CTC per annum</Form.Label>
+                            <Form.Control
+                                type="number"
+                                name="expectedCtc"
+                                value={values.expectedCtc}
+                                onChange={handleChange}
+                                isInvalid={touched.expectedCtc && errors.expectedCtc}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.expectedCtc}
+                            </Form.Control.Feedback>
+                        </Col>
 
-                    <div className="mb-3">
-                        <Form.Label>Notice Period</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="noticePeriod"
-                            value={values.noticePeriod}
-                            onChange={handleChange}
-                            isInvalid={touched.noticePeriod && errors.noticePeriod}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {errors.noticePeriod}
-                        </Form.Control.Feedback>
-                    </div>
+                        <Col lg={4} className="mb-3">
+                            <Form.Label>Notice Period</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="noticePeriod"
+                                value={values.noticePeriod}
+                                onChange={handleChange}
+                                isInvalid={touched.noticePeriod && errors.noticePeriod}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.noticePeriod}
+                            </Form.Control.Feedback>
+                        </Col>
+                    </Row>
+
 
                     {/* References */}
                     <FieldArray name="references">

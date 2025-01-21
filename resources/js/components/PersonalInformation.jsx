@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Form as BootstrapForm, Row, Col } from 'react-bootstrap';
@@ -6,6 +6,7 @@ import WizardButtons from './WizardButtons';
 import ImagePicker from './ImagePicker';
 import { useWizardContext } from './WizardContext';
 import moment from 'moment';
+import axios from 'axios';
 
 const MaritalStatusOptions = ['Bachelor', 'Married', 'Other'];
 const VehicleTypeOptions = ['2 Wheeler', '4 Wheeler'];
@@ -71,9 +72,21 @@ const validationSchema = Yup.object({
 const PersonalInformation = () => {
     const { goNext, form } = useWizardContext();
 
+    const [posts, setPosts] = useState({})
+
+    const fetchPosts = useCallback(async () => {
+        const response = await axios.get("/career-post?response=json");
+        setPosts(response.data)
+    }, [])
+
+    useEffect(() => {
+        fetchPosts()
+    }, [fetchPosts])
+
     return (
         <Formik
             initialValues={{
+                carrerPostId: form?.carrerPostId || '',
                 fullName: form?.fullName || '',
                 fatherOrHusbandName: form?.fatherOrHusbandName || '',
                 currentAddress: form?.currentAddress || '',
@@ -98,6 +111,18 @@ const PersonalInformation = () => {
                 <Form onSubmit={handleSubmit} as={BootstrapForm}>
                     <Row className="mb-3">
                         <Col md={8}>
+                            <div className="mb-3">
+                                <BootstrapForm.Label>Appling For?</BootstrapForm.Label>
+                                <Field as={BootstrapForm.Select} className="form-control">
+                                    <option value="">Select Post</option>
+                                    {
+                                        !!Object.keys(posts)?.length &&
+                                        Object.keys(posts)?.map((postId) => (
+                                            <option value={postId} key={postId}>{posts[postId]}</option>
+                                        ))
+                                    }
+                                </Field>
+                            </div>
                             <Row>
                                 <Col md={6} className="mb-3">
                                     <BootstrapForm.Group>
