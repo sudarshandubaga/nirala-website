@@ -57,7 +57,6 @@ const validationSchema = Yup.object({
             }
         ),
     sign: Yup.string()
-        .required('Signature is required')
         .test(
             'is-base64',
             'Signature must be a valid base64 string',

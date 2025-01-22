@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Button, Table, Modal, FormControl, FormLabel, Col, Row } from 'react-bootstrap';
+import { Button, Table, Modal, FormControl, FormLabel, Col, Row, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import WizardButtons from './WizardButtons';
 import moment from 'moment';
 import { CgClose } from 'react-icons/cg';
@@ -15,6 +15,7 @@ const Employment = () => {
     const formikRef = useRef(null)
 
     const initialValues = {
+        isProfessionalMember: 'no',
         professionalMembership: form?.professionalMembership || [
             { organization: '', dateSince: '', contribution: '' },
         ],
@@ -34,7 +35,7 @@ const Employment = () => {
                 salaryOnLeaving: Yup.number().required('Required'),
                 reasonOfLeaving: Yup.string().required('Required'),
             })
-        ).min(1, 'At least one employment history record is required'),
+        ).min(2, 'At least one employment history record is required'),
     });
 
     const handleShowModal = (editValues = null) => {
@@ -57,76 +58,95 @@ const Employment = () => {
                 }}
                 innerRef={formikRef}
             >
-                {({ values, errors, touched, setFieldValue }) => (
+                {({ values, errors, touched, handleChange, setFieldValue }) => (
                     <Form>
                         <h4>Professional Membership</h4>
-                        <FieldArray name="professionalMembership">
-                            {({ remove, push }) => (
-                                <div className='mb-5'>
-                                    <Button
-                                        variant="success"
-                                        className='mb-3'
-                                        onClick={() => push({ organization: '', dateSince: '', contribution: '' })}
-                                    >
-                                        Add Record
-                                    </Button>
-                                    <Table bordered>
-                                        <thead>
-                                            <tr>
-                                                <th>Organization/Association</th>
-                                                <th>Date Since</th>
-                                                <th>Contribution</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {values?.professionalMembership?.map((_, index) => (
-                                                <tr key={index} className="mb-3">
-                                                    <td md={4}>
-                                                        <Field
-                                                            name={`professionalMembership.${index}.organization`}
-                                                            placeholder="Organization/Association"
-                                                            className="form-control"
-                                                        />
-                                                        {touched.professionalMembership &&
-                                                            errors.professionalMembership &&
-                                                            errors.professionalMembership[index]?.organization && (
-                                                                <div className="text-danger">
-                                                                    {errors.professionalMembership[index]?.organization}
-                                                                </div>
-                                                            )}
-                                                    </td>
-                                                    <td md={3}>
-                                                        <Field
-                                                            name={`professionalMembership.${index}.dateSince`}
-                                                            placeholder="Date Since"
-                                                            type="date"
-                                                            className="form-control"
-                                                        />
-                                                    </td>
-                                                    <td md={3}>
-                                                        <Field
-                                                            name={`professionalMembership.${index}.contribution`}
-                                                            placeholder="Contribution"
-                                                            className="form-control"
-                                                        />
-                                                    </td>
-                                                    <td>
-                                                        <Button
-                                                            variant="danger"
-                                                            onClick={() => remove(index)}
-                                                        >
-                                                            Remove
-                                                        </Button>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </Table>
-                                </div>
+                        <div className="mb-3 d-flex justify-content-between align-items-center">
+                            <FormLabel>Are you a member of any professional organization?</FormLabel>
+                            <ToggleButtonGroup
+                                type="radio"
+                                name="isProfessionalMember"
+                                value={values.isProfessionalMember}
+                                onChange={(value) => handleChange({ target: { name: "isProfessionalMember", value } })}
+                            >
+                                <ToggleButton id="isProfessionalMember-yes" value="yes">Yes</ToggleButton>
+                                <ToggleButton id="isProfessionalMember-no" value="no">No</ToggleButton>
+                            </ToggleButtonGroup>
+                            {errors.isProfessionalMember && touched.isProfessionalMember && (
+                                <div className="text-danger">{errors.isProfessionalMember}</div>
                             )}
-                        </FieldArray>
+                        </div>
+                        {
+                            values?.isProfessionalMember === 'yes' &&
+                            <FieldArray name="professionalMembership">
+                                {({ remove, push }) => (
+                                    <div className='mb-5'>
+                                        <Button
+                                            variant="success"
+                                            className='mb-3'
+                                            onClick={() => push({ organization: '', dateSince: '', contribution: '' })}
+                                        >
+                                            Add Record
+                                        </Button>
+                                        <Table bordered>
+                                            <thead>
+                                                <tr>
+                                                    <th>Organization/Association</th>
+                                                    <th>Date Since</th>
+                                                    <th>Contribution</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {values?.professionalMembership?.map((_, index) => (
+                                                    <tr key={index} className="mb-3">
+                                                        <td md={4}>
+                                                            <Field
+                                                                name={`professionalMembership.${index}.organization`}
+                                                                placeholder="Organization/Association"
+                                                                className="form-control"
+                                                            />
+                                                            {touched.professionalMembership &&
+                                                                errors.professionalMembership &&
+                                                                errors.professionalMembership[index]?.organization && (
+                                                                    <div className="text-danger">
+                                                                        {errors.professionalMembership[index]?.organization}
+                                                                    </div>
+                                                                )}
+                                                        </td>
+                                                        <td md={3}>
+                                                            <Field
+                                                                name={`professionalMembership.${index}.dateSince`}
+                                                                placeholder="Date Since"
+                                                                type="date"
+                                                                className="form-control"
+                                                            />
+                                                        </td>
+                                                        <td md={3}>
+                                                            <Field
+                                                                name={`professionalMembership.${index}.contribution`}
+                                                                placeholder="Contribution"
+                                                                className="form-control"
+                                                            />
+                                                        </td>
+                                                        <td>
+                                                            <Button
+                                                                variant="danger"
+                                                                onClick={() => remove(index)}
+                                                            >
+                                                                Remove
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </Table>
+                                    </div>
+                                )}
+                            </FieldArray>
+                        }
                         <h4>Employment History</h4>
+                        <p>Begin with your present and work backwards. (* 2 companies details are must)</p>
                         <Button variant="success" onClick={() => handleShowModal()} className='mb-3'>
                             Add Employment History
                         </Button>

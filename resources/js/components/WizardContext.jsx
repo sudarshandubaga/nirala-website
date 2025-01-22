@@ -182,7 +182,10 @@ export const WizardProvider = ({ children }) => {
         expectedCtc: null,
         currentCtc: null,
         noticePeriod: '',
-        references: [],
+        references: [
+            { serialNo: 1, name: "", company: "", designation: "", capacity: "", contact: "" },
+            { serialNo: 2, name: "", company: "", designation: "", capacity: "", contact: "" },
+        ],
         professionalMembership: [],
         employmentHistory: [],
         particulars: [
