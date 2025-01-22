@@ -22,6 +22,7 @@ export const WizardProvider = ({ children }) => {
     const [currentStep, setCurrentStep] = useState(0);
 
     const [form, setForm] = useState({
+        careerPostId: '',
         fullName: 'John Doe',
         fatherOrHusbandName: 'Michael Doe',
         currentAddress: '123 Main Street, City, Country',
@@ -158,7 +159,7 @@ export const WizardProvider = ({ children }) => {
     });
 
     // const [form, setForm] = useState({
-    //     carrerPostId: '',
+    //     careerPostId: '',
     //     fullName: '',
     //     fatherOrHusbandName: '',
     //     currentAddress: '',

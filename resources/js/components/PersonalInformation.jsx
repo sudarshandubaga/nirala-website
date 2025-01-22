@@ -85,7 +85,7 @@ const PersonalInformation = () => {
     return (
         <Formik
             initialValues={{
-                carrerPostId: form?.carrerPostId || '',
+                careerPostId: form?.careerPostId || '',
                 fullName: form?.fullName || '',
                 fatherOrHusbandName: form?.fatherOrHusbandName || '',
                 currentAddress: form?.currentAddress || '',
@@ -112,7 +112,7 @@ const PersonalInformation = () => {
                         <Col md={8}>
                             <div className="mb-3">
                                 <BootstrapForm.Label>Appling For?</BootstrapForm.Label>
-                                <Field name="carrerPostId" as={BootstrapForm.Select} className="form-control">
+                                <Field name="careerPostId" as={BootstrapForm.Select} className="form-control">
                                     <option value="">Select Post</option>
                                     {
                                         !!Object.keys(posts)?.length &&
