@@ -43,6 +43,7 @@ return new class extends Migration
             $table->json('particulars')->nullable();
             $table->string('resume_file')->nullable();
             $table->string('application_form')->nullable();
+            $table->enum('is_professional_member', ['yes', 'no'])->default('no');
             $table->timestamps();
         });
     }

@@ -35,7 +35,7 @@ const Employment = () => {
                 salaryOnLeaving: Yup.number().required('Required'),
                 reasonOfLeaving: Yup.string().required('Required'),
             })
-        ).min(2, 'At least one employment history record is required'),
+        ).min(2, 'Min 2 employment history record is required'),
     });
 
     const handleShowModal = (editValues = null) => {

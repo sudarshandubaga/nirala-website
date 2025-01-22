@@ -71,6 +71,9 @@ class ApplicantDataTable extends DataTable
             ->addColumn('post', function ($careerPost) {
                 return $careerPost?->career_post?->title ?? 'N/A';
             })
+            ->addColumn('date', function ($careerPost) {
+                return date('d/m/Y', strtotime($careerPost->created_at));
+            })
             ->rawColumns(['action', 'file',  'photo', 'contact'])
             ->addIndexColumn();
     }
@@ -134,8 +137,8 @@ class ApplicantDataTable extends DataTable
             Column::make('current_ctc'),
             Column::make('expected_ctc'),
             // Column::make('previous_company_name'),
-            // Column::make('remarks'),
             Column::make('file'),
+            Column::make('date'),
             Column::make('action'),
         ];
     }
