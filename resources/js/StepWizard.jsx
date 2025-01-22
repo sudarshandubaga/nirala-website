@@ -17,9 +17,11 @@ const StepWizardContent = () => {
             <div className='mb-5 d-flex'>
                 {
                     steps.map((step, index) => (
-                        <Button variant={getVariant(index)} type='button' onClick={() => setCurrentStep(index)} className='d-flex flex-column text-center align-items-center' style={{
-                            flex: 1
-                        }} key={index}>
+                        <Button variant={getVariant(index)} type='button'
+                            // onClick={() => setCurrentStep(index)} 
+                            className='d-flex flex-column text-center align-items-center' style={{
+                                flex: 1
+                            }} key={index}>
                             <span className='px-2 bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center' style={{
                                 aspectRatio: 1
                             }}>{index + 1}</span>
