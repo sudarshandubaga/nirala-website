@@ -6,7 +6,7 @@
         <div class="dez-bnr-inr overlay-black-middle" style="background-image:url(images/background/bg4.jpg);">
             <div class="container">
                 <div class="dez-bnr-inr-entry">
-                    <h1 class="text-white text-center">{{ $page->title }}</h1>
+                    <h1 class="text-white text-center">Thank You</h1>
                 </div>
             </div>
         </div>
