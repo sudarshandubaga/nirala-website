@@ -86,15 +86,15 @@ const AdditionalInformation = () => {
                 formData.append("resume_file", resumeFile)
 
             // Send data to server
-            const response = await axios.post("/api/applicant", formData, {
+            await axios.post("/api/applicant", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
 
-            console.log("Server Response:", response.data);
-            // alert("Form submitted successfully!");
+            // console.log("Server Response:", response.data);
             toast.success("Your details have been sent, HR Team will contact you shortly.");
+            window.location = "/thank-you";
         } catch (error) {
             console.error("Error submitting form:", error.response?.data || error.message);
             // alert("Failed to submit the form. Please try again.");

@@ -153,4 +153,9 @@ Route::get('apply-job', function () {
     view()->share(compact('site'));
     return view('web.inc.career-post.apply');
 })->name('apply-job');
+Route::get('thank-you', function () {
+    $site = Site::find(1);
+    view()->share(compact('site'));
+    return view('web.inc.thankyou');
+})->name('apply-job');
 Route::get('{page}', [WebPageController::class, 'show'])->name('page.show');
