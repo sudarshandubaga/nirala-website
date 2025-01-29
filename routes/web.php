@@ -157,5 +157,5 @@ Route::get('thank-you', function () {
     $site = Site::find(1);
     view()->share(compact('site'));
     return view('web.inc.thankyou');
-})->name('apply-job');
+})->name('thankyou');
 Route::get('{page}', [WebPageController::class, 'show'])->name('page.show');

@@ -69,14 +69,22 @@
                 {{ $form['father_or_husband_name'] ?? '' }}</td>
         </tr>
         <tr>
-            <th>Address:</th>
+            <th>Current Address:</th>
             <td>
                 {{ $form['current_address'] ?? '' }}</td>
         </tr>
         <tr>
-            <th>Phone:</th>
+            <th>Permanent Address:</th>
             <td>
-                {{ $form['phone_number'] ?? '' }}</td>
+                {{ $form['permanent_address'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <th>Mobile No.:</th>
+            <td>{{ $form['phone_number'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <th>Mobile No. (Alternate):</th>
+            <td>{{ $form['alt_mobile_no'] ?? '' }}</td>
         </tr>
         <tr>
             <th>Email:</th>
@@ -102,6 +110,16 @@
             <th>Spouse's Name:</th>
             <td>
                 {{ $form['spouse_name'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <th>Spouse's Mobile No.:</th>
+            <td>
+                {{ $form['spouse_mobile'] ?? '' }}</td>
+        </tr>
+        <tr>
+            <th>Spouse's Occupation:</th>
+            <td>
+                {{ $form['spouse_occupation'] ?? '' }}</td>
         </tr>
         <tr>
             <th>Nationality:</th>

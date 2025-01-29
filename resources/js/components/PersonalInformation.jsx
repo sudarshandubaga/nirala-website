@@ -8,7 +8,7 @@ import { useWizardContext } from './WizardContext';
 import moment from 'moment';
 import axios from 'axios';
 
-const MaritalStatusOptions = ['Bachelor', 'Married', 'Other'];
+const MaritalStatusOptions = ['Unmarried', 'Married'];
 const VehicleTypeOptions = ['2 Wheeler', '4 Wheeler'];
 
 const validationSchema = Yup.object({
@@ -19,6 +19,9 @@ const validationSchema = Yup.object({
         .required('Father / Husband Name is required')
         .min(3, 'Name must be at least 3 characters long'),
     currentAddress: Yup.string()
+        .required('Current Address is required')
+        .min(10, 'Address must be at least 10 characters long'),
+    permanentAddress: Yup.string()
         .required('Current Address is required')
         .min(10, 'Address must be at least 10 characters long'),
     dateOfBirth: Yup.date()
@@ -73,6 +76,14 @@ const PersonalInformation = () => {
 
     const [posts, setPosts] = useState({})
 
+    const occupations = [
+        "Non-working",
+        "Software Engineer",
+        "Doctor",
+        "Teacher",
+        "Artist",
+    ]
+
     const fetchPosts = useCallback(async () => {
         const response = await axios.get("/career-post?response=json");
         setPosts(response.data)
@@ -89,13 +100,17 @@ const PersonalInformation = () => {
                 fullName: form?.fullName || '',
                 fatherOrHusbandName: form?.fatherOrHusbandName || '',
                 currentAddress: form?.currentAddress || '',
+                permanentAddress: form?.permanentAddress || '',
                 dateOfBirth: form?.dateOfBirth || '',
                 placeOfBirth: form?.placeOfBirth || '',
                 maritalStatus: form?.maritalStatus || '',
                 email: form?.email || '',
                 phoneNumber: form?.phoneNumber || '',
-                spouseName: form?.spouseName || '',
+                altMobileNo: form?.altMobileNo || '',
                 occupation: form?.occupation || '',
+                spouseName: form?.spouseName || '',
+                spouseMobile: form?.spouseMobile || '',
+                spouseOccupation: form?.spouseOccupation || '',
                 nationality: form?.nationality || 'Indian',
                 vehicleType: form?.vehicleType || '',
                 image: form?.image || null,
@@ -137,30 +152,14 @@ const PersonalInformation = () => {
                                 </Col>
                                 <Col md={6} className="mb-3">
                                     <BootstrapForm.Group>
-                                        <BootstrapForm.Label>Father / Husband Name</BootstrapForm.Label>
+                                        <BootstrapForm.Label>Father's Name</BootstrapForm.Label>
                                         <Field
                                             name="fatherOrHusbandName"
                                             as={BootstrapForm.Control}
                                             type="text"
-                                            placeholder="Enter Father / Husband name"
+                                            placeholder="Enter Father's name"
                                         />
                                         <ErrorMessage name="fatherOrHusbandName" component="div" className="text-danger" />
-                                    </BootstrapForm.Group>
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col className="mb-3">
-                                    <BootstrapForm.Group>
-                                        <BootstrapForm.Label>Current Address</BootstrapForm.Label>
-                                        <Field
-                                            name="currentAddress"
-                                            as="textarea"
-                                            rows={3}
-                                            placeholder="Enter your current address"
-                                            className="form-control"
-                                        />
-                                        <ErrorMessage name="currentAddress" component="div" className="text-danger" />
                                     </BootstrapForm.Group>
                                 </Col>
                             </Row>
@@ -187,6 +186,97 @@ const PersonalInformation = () => {
                                 </Col>
                                 <Col md={4} className="mb-3">
                                     <BootstrapForm.Group>
+                                        <BootstrapForm.Label>Email ID</BootstrapForm.Label>
+                                        <Field
+                                            name="email"
+                                            as={BootstrapForm.Control}
+                                            type="email"
+                                            placeholder="Enter your email"
+                                        />
+                                        <ErrorMessage name="email" component="div" className="text-danger" />
+                                    </BootstrapForm.Group>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col md={6} className="mb-3">
+                                    <BootstrapForm.Group>
+                                        <BootstrapForm.Label>Mobile Number</BootstrapForm.Label>
+                                        <Field
+                                            name="phoneNumber"
+                                            as={BootstrapForm.Control}
+                                            type="text"
+                                            placeholder="Enter your mobile number"
+                                        />
+                                        <ErrorMessage name="phoneNumber" component="div" className="text-danger" />
+                                    </BootstrapForm.Group>
+                                </Col>
+                                <Col md={6} className="mb-3">
+                                    <BootstrapForm.Group>
+                                        <BootstrapForm.Label>Alternate Mobile Number</BootstrapForm.Label>
+                                        <Field
+                                            name="altMobileNo"
+                                            as={BootstrapForm.Control}
+                                            type="text"
+                                            placeholder="Enter your alternate mobile number"
+                                        />
+                                        <ErrorMessage name="altMobileNo" component="div" className="text-danger" />
+                                    </BootstrapForm.Group>
+                                </Col>
+                            </Row>
+                            <div className="mb-3">
+                                <BootstrapForm.Group>
+                                    <BootstrapForm.Label>Current Address</BootstrapForm.Label>
+                                    <Field
+                                        name="currentAddress"
+                                        as="textarea"
+                                        rows={3}
+                                        placeholder="Enter your current address"
+                                        className="form-control"
+                                    />
+                                    <ErrorMessage name="currentAddress" component="div" className="text-danger" />
+                                </BootstrapForm.Group>
+                            </div>
+                            <div className="mb-3">
+                                <BootstrapForm.Group>
+                                    <BootstrapForm.Label>Permanent Address</BootstrapForm.Label>
+                                    <Field
+                                        name="permanentAddress"
+                                        as="textarea"
+                                        rows={3}
+                                        placeholder="Enter your permanent address"
+                                        className="form-control"
+                                    />
+                                    <ErrorMessage name="permanentAddress" component="div" className="text-danger" />
+                                </BootstrapForm.Group>
+                            </div>
+                            <Row>
+                                <Col md={4} className="mb-3">
+                                    <BootstrapForm.Group>
+                                        <BootstrapForm.Label>Occupation</BootstrapForm.Label>
+                                        <Field
+                                            name="occupation"
+                                            as={BootstrapForm.Control}
+                                            type="text"
+                                            placeholder="Enter your occupation"
+                                        />
+                                        <ErrorMessage name="occupation" component="div" className="text-danger" />
+                                    </BootstrapForm.Group>
+                                </Col>
+                                <Col md={4} className="mb-3">
+                                    <BootstrapForm.Group>
+                                        <BootstrapForm.Label>Nationality</BootstrapForm.Label>
+                                        <Field
+                                            name="nationality"
+                                            as={BootstrapForm.Control}
+                                            type="text"
+                                            placeholder="Enter your nationality"
+                                        />
+                                        <ErrorMessage name="nationality" component="div" className="text-danger" />
+                                    </BootstrapForm.Group>
+                                </Col>
+                                <Col md={4} className="mb-3">
+                                    <BootstrapForm.Group>
                                         <BootstrapForm.Label>Marital Status</BootstrapForm.Label>
                                         <Field name="maritalStatus" as={BootstrapForm.Select} className="form-control">
                                             <option value="">Select Marital Status</option>
@@ -199,80 +289,73 @@ const PersonalInformation = () => {
                                         <ErrorMessage name="maritalStatus" component="div" className="text-danger" />
                                     </BootstrapForm.Group>
                                 </Col>
-                            </Row>
+                                {values.maritalStatus === 'Married' && (
+                                    <>
+                                        <Col md={4} className="mb-3">
+                                            <BootstrapForm.Group>
+                                                <BootstrapForm.Label>Spouse's Name</BootstrapForm.Label>
+                                                <Field
+                                                    name="spouseName"
+                                                    as={BootstrapForm.Control}
+                                                    type="text"
+                                                    placeholder="Enter Spouse’s Name"
+                                                />
+                                                <ErrorMessage name="spouseName" component="div" className="text-danger" />
+                                            </BootstrapForm.Group>
+                                        </Col>
+                                        <Col md={4} className="mb-3">
+                                            <BootstrapForm.Group>
+                                                <BootstrapForm.Label>Spouse's Mobile Number</BootstrapForm.Label>
+                                                <Field
+                                                    name="spouseMobile"
+                                                    as={BootstrapForm.Control}
+                                                    type="text"
+                                                    placeholder="Enter Spouse's Mobile No."
+                                                />
+                                                <ErrorMessage name="spouseMobile" component="div" className="text-danger" />
+                                            </BootstrapForm.Group>
+                                        </Col>
+                                        <Col md={4} className="mb-3">
+                                            <BootstrapForm.Group>
+                                                <BootstrapForm.Label>Spouse's Occupation</BootstrapForm.Label>
+                                                <Field
+                                                    name="spouseOccupation"
+                                                    as={BootstrapForm.Select}
+                                                    type="text"
+                                                    placeholder="Enter Spouse's Occupation"
+                                                    className="form-control"
+                                                    value={!occupations.includes(values?.spouseOccupation) ? '' : values?.spouseOccupation}
+                                                >
+                                                    {
+                                                        occupations.map((des) => (
+                                                            <option value={des} key={des}>{des}</option>
+                                                        ))
+                                                    }
+                                                    <option value="" selected={!occupations.includes(values?.spouseOccupation)}>Other</option>
+                                                </Field>
+                                                <ErrorMessage name="spouseOccupation" component="div" className="text-danger" />
+                                            </BootstrapForm.Group>
+                                        </Col>
+                                        {
+                                            (!occupations.includes(values?.spouseOccupation)) && (
+                                                <Col md={6} className="mb-3">
+                                                    <BootstrapForm.Group>
+                                                        <BootstrapForm.Label>Spouse's Occupation</BootstrapForm.Label>
+                                                        <Field
+                                                            name="spouseOccupation"
+                                                            as={BootstrapForm.Control}
+                                                            type="text"
+                                                            placeholder="Enter Spouse's Occupation"
+                                                        />
+                                                        <ErrorMessage name="spouseOccupation" component="div" className="text-danger" />
+                                                    </BootstrapForm.Group>
+                                                </Col>
+                                            )
+                                        }
+                                    </>
+                                )}
 
-                            {values.maritalStatus === 'Married' && (
-                                <Row>
-                                    <Col md={6} className="mb-3">
-                                        <BootstrapForm.Group>
-                                            <BootstrapForm.Label>Spouse’s Name</BootstrapForm.Label>
-                                            <Field
-                                                name="spouseName"
-                                                as={BootstrapForm.Control}
-                                                type="text"
-                                                placeholder="Enter Spouse’s Name"
-                                            />
-                                            <ErrorMessage name="spouseName" component="div" className="text-danger" />
-                                        </BootstrapForm.Group>
-                                    </Col>
-                                </Row>
-                            )}
 
-                            <Row>
-                                <Col md={6} className="mb-3">
-                                    <BootstrapForm.Group>
-                                        <BootstrapForm.Label>Email ID</BootstrapForm.Label>
-                                        <Field
-                                            name="email"
-                                            as={BootstrapForm.Control}
-                                            type="email"
-                                            placeholder="Enter your email"
-                                        />
-                                        <ErrorMessage name="email" component="div" className="text-danger" />
-                                    </BootstrapForm.Group>
-                                </Col>
-                                <Col md={6} className="mb-3">
-                                    <BootstrapForm.Group>
-                                        <BootstrapForm.Label>Phone Number</BootstrapForm.Label>
-                                        <Field
-                                            name="phoneNumber"
-                                            as={BootstrapForm.Control}
-                                            type="text"
-                                            placeholder="Enter your phone number"
-                                        />
-                                        <ErrorMessage name="phoneNumber" component="div" className="text-danger" />
-                                    </BootstrapForm.Group>
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col md={6} className="mb-3">
-                                    <BootstrapForm.Group>
-                                        <BootstrapForm.Label>Occupation</BootstrapForm.Label>
-                                        <Field
-                                            name="occupation"
-                                            as={BootstrapForm.Control}
-                                            type="text"
-                                            placeholder="Enter your occupation"
-                                        />
-                                        <ErrorMessage name="occupation" component="div" className="text-danger" />
-                                    </BootstrapForm.Group>
-                                </Col>
-                                <Col md={6} className="mb-3">
-                                    <BootstrapForm.Group>
-                                        <BootstrapForm.Label>Nationality</BootstrapForm.Label>
-                                        <Field
-                                            name="nationality"
-                                            as={BootstrapForm.Control}
-                                            type="text"
-                                            placeholder="Enter your nationality"
-                                        />
-                                        <ErrorMessage name="nationality" component="div" className="text-danger" />
-                                    </BootstrapForm.Group>
-                                </Col>
-                            </Row>
-
-                            <Row>
                                 <Col md={6} className="mb-3">
                                     <BootstrapForm.Group>
                                         <BootstrapForm.Label>Vehicle Type</BootstrapForm.Label>
