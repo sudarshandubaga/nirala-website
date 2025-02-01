@@ -60,11 +60,13 @@ const validationSchema = Yup.object({
             }
         ),
     sign: Yup.string()
+        .nullable()
+        .optional()
         .test(
             'is-base64',
             'Signature must be a valid base64 string',
             (value) => {
-                if (!value) return false;
+                if (!value) return true;
                 const base64Pattern = /^data:image\/(webp);base64,/;
                 return base64Pattern.test(value);
             }
@@ -77,11 +79,7 @@ const PersonalInformation = () => {
     const [posts, setPosts] = useState({})
 
     const occupations = [
-        "Non-working",
-        "Software Engineer",
-        "Doctor",
-        "Teacher",
-        "Artist",
+        "Non-Working",
     ]
 
     const fetchPosts = useCallback(async () => {
@@ -324,20 +322,19 @@ const PersonalInformation = () => {
                                                     type="text"
                                                     placeholder="Enter Spouse's Occupation"
                                                     className="form-control"
-                                                    value={!occupations.includes(values?.spouseOccupation) ? '' : values?.spouseOccupation}
                                                 >
+                                                    <option value="">Working</option>
                                                     {
                                                         occupations.map((des) => (
                                                             <option value={des} key={des}>{des}</option>
                                                         ))
                                                     }
-                                                    <option value="" selected={!occupations.includes(values?.spouseOccupation)}>Other</option>
                                                 </Field>
                                                 <ErrorMessage name="spouseOccupation" component="div" className="text-danger" />
                                             </BootstrapForm.Group>
                                         </Col>
                                         {
-                                            (!occupations.includes(values?.spouseOccupation)) && (
+                                            ((!occupations.includes(values?.spouseOccupation))) && (
                                                 <Col md={6} className="mb-3">
                                                     <BootstrapForm.Group>
                                                         <BootstrapForm.Label>Spouse's Occupation</BootstrapForm.Label>
