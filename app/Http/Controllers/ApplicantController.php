@@ -29,7 +29,7 @@ class ApplicantController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|unique:applicants,email',
+            'email' => 'required|email',
             'resume_file' => 'required|file|mimes:pdf,doc,docx|max:2048',
         ]);
 
