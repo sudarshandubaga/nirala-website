@@ -62,50 +62,55 @@ const AdditionalInformation = () => {
 
     // Submit handler
     const handleSubmit = async (values) => {
-        console.log('values: ', values);
 
-        if (resumeFile) {
-            try {
-                // Convert the object to snake_case
-                const snakeCaseData = toSnakeCase(values);
-
-                // Create FormData
-                const formData = new FormData();
-
-                // Append form data
-                Object.keys(snakeCaseData).forEach((key) => {
-                    if (Array.isArray(snakeCaseData[key])) {
-                        // For arrays, stringify and send
-                        formData.append(key, JSON.stringify(snakeCaseData[key]));
-                    } else {
-                        // Append regular fields
-                        formData.append(key, snakeCaseData[key]);
-                    }
-                });
-
-                if (resumeFile)
-                    formData.append("resume_file", resumeFile)
-
-                // Send data to server
-                await axios.post("/api/applicant", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                });
-
-                // console.log("Server Response:", response.data);
-                toast.success("Your details have been sent, HR Team will contact you shortly.");
-                window.location = "/thank-you";
-            } catch (error) {
-                console.error("Error submitting form:", error.response?.data || error.message);
-                // alert("Failed to submit the form. Please try again.");
-                toast.error("Failed to submit the form. Please try again.")
-            }
-
-        } else {
-            toast.warning("Please select resume file");
+        if (!resumeFile) {
+            toast.warning("Please select a resume file");
+            return;
         }
 
+        // Validate file type
+        const allowedExtensions = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+        if (!allowedExtensions.includes(resumeFile.type)) {
+            toast.error("Invalid file type. Please upload a PDF or DOC file.");
+            return;
+        }
+
+        try {
+            // Convert the object to snake_case
+            const snakeCaseData = toSnakeCase(values);
+
+            // Create FormData
+            const formData = new FormData();
+
+            // Append form data
+            Object.keys(snakeCaseData).forEach((key) => {
+                if (Array.isArray(snakeCaseData[key])) {
+                    // For arrays, stringify and send
+                    formData.append(key, JSON.stringify(snakeCaseData[key]));
+                } else {
+                    // Append regular fields
+                    formData.append(key, snakeCaseData[key]);
+                }
+            });
+
+            if (resumeFile)
+                formData.append("resume_file", resumeFile)
+
+            // Send data to server
+            await axios.post("/api/applicant", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            // console.log("Server Response:", response.data);
+            toast.success("Your details have been sent, HR Team will contact you shortly.");
+            window.location = "/thank-you";
+        } catch (error) {
+            console.error("Error submitting form:", error.response?.data || error.message);
+            // alert("Failed to submit the form. Please try again.");
+            toast.error("Failed to submit the form. Please try again.")
+        }
     };
 
     const handleResume = (event) => {
