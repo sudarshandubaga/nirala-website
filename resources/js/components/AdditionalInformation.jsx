@@ -27,6 +27,7 @@ const AdditionalInformation = () => {
             { serialNo: 1, name: "", company: "", designation: "", capacity: "", contact: "" },
             { serialNo: 2, name: "", company: "", designation: "", capacity: "", contact: "" },
         ],
+        interviewedDetails: form?.interviewedDetails || "",
     };
 
     const validationSchema = Yup.object().shape({
@@ -43,6 +44,10 @@ const AdditionalInformation = () => {
         interviewed: Yup.string().required("This field is required"),
         expectedCtc: Yup.number().required("Expected CTC is required"),
         noticePeriod: Yup.string().required("Notice period is required"),
+        interviewedDetails: Yup.string().when("interviewed", {
+            is: "yes",
+            then: Yup.string().required("Details are required"),
+        }),
     });
 
     // Function to convert camelCase keys to snake_case
@@ -217,6 +222,23 @@ const AdditionalInformation = () => {
                             <div className="text-danger">{errors.interviewed}</div>
                         )}
                     </div>
+                    {values.interviewed === "yes" && (
+                        <Row>
+                            <Col className="mb-3">
+                                <Form.Label>Interview Details</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="interviewedDetails"
+                                    value={values.interviewedDetails}
+                                    onChange={handleChange}
+                                    isInvalid={touched.interviewedDetails && errors.interviewedDetails}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.interviewedDetails}
+                                </Form.Control.Feedback>
+                            </Col>
+                        </Row>
+                    )}
 
                     <Row>
                         {/* Normal Values */}

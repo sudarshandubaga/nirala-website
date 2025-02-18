@@ -36,6 +36,11 @@ const validationSchema = Yup.object({
     phoneNumber: Yup.string()
         .required('Phone Number is required')
         .matches(/^\d{10}$/, 'Phone Number must be 10 digits'),
+    altMobileNo: Yup.string()
+        .nullable()
+        .optional()
+        .matches(/^\d{10}$/, 'Alternate Mobile Number must be 10 digits')
+        .notOneOf([Yup.ref('phoneNumber'), null], 'Alternate Mobile Number must be different from Phone Number'),
     spouseName: Yup.string().when('maritalStatus', (maritalStatus, schema) => {
         return maritalStatus === 'Married'
             ? schema.required("Spouse’s Name is required").min(3, "Name must be at least 3 characters long")
