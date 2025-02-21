@@ -248,7 +248,13 @@
             </tr>
         </thead>
         <tbody>
+            @php
+                $total = 0;
+            @endphp
             @foreach ($form['particulars'] ?? [] as $particular)
+                @php
+                    $total += $item['amount'] ?? 0;
+                @endphp
                 <tr>
                     <td rowspan="{{ count($particular['items']) }}">{{ $particular['title'] }}</td>
                     @foreach ($particular['items'] as $index => $item)
@@ -262,6 +268,10 @@
             @endforeach
             </tr>
             @endforeach
+            <tr>
+                <td colspan="2">Total</td>
+                <td colspan="2">{{ $total }}</td>
+            </tr>
         </tbody>
     </table>
 
